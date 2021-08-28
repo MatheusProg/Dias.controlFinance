@@ -15,30 +15,18 @@ const Modal = {
     }
 }
 
+// LocalStorage
+const Storage = {
+    get() {
+        return JSON.parse(localStorage.getItem("controlFinance")) || []
+    },
+    set(transactions) {
+        localStorage.setItem("controlFinance", JSON.stringify (transactions))
+    }
+}
+
 const Transaction = {
-    all: [
-        {
-            description: 'Luz',
-            amount: -15000,
-            date: '23/01/2021'
-        },
-        {
-    
-            description: 'Website',
-            amount: 500000,
-            date: '23/01/2021'
-        },
-        {
-            description: 'Internet',
-            amount: -20000,
-            date: '23/01/2021'
-        },
-        {
-            description: 'App',
-            amount: 20000,
-            date: '23/01/2021'
-        },
-    ],
+    all: Storage.get(),
     
     add(transaction) {
         Transaction.all.push(transaction)
@@ -129,7 +117,7 @@ const DOM = {
     }
 }
 
-    // converte/formata valores em moeda e de dados
+// converte/formata valores em moeda e de dados
 const Utils = {
 // Formata dados
     formatAmount(value) {
@@ -240,6 +228,8 @@ const App = {
         Transaction.all.forEach(DOM.addTransaction)
         
         DOM.updateBalance()
+
+        Storage.set(Transaction.all)
     },
     reload() {
         DOM.clearTransaction()
